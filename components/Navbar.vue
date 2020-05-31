@@ -72,7 +72,8 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-action>
-                    <v-switch v-model="$vuetify.theme.dark" color="orange"></v-switch>
+                    <!-- <v-switch v-model="$vuetify.theme.dark" color="orange"></v-switch> -->
+                    <v-switch v-model="theme" color="orange"></v-switch>
                   </v-list-item-action>
                   <v-list-item-title>Modo oscuro</v-list-item-title>
                 </v-list-item>
@@ -136,7 +137,8 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-action>
-                    <v-switch v-model="$vuetify.theme.dark" color="orange"></v-switch>
+                    <!-- <v-switch v-model="$vuetify.theme.dark" color="orange"></v-switch> -->
+                    <v-switch v-model="theme" color="orange"></v-switch>
                   </v-list-item-action>
                   <v-list-item-title>Modo oscuro</v-list-item-title>
                 </v-list-item>
@@ -207,15 +209,38 @@ export default {
   data() {
     return {
       drawer: false,
-      group: null
+      group: null,
+      theme: null
     };
   },
 
   mounted() {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    if (localStorage.theme) {
+      if (localStorage.theme == "dark") {
+        this.$vuetify.theme.dark = true;
+        this.theme = true;
+      } else {
+        this.$vuetify.theme.dark = false;
+        this.theme = false;
+      }
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       this.$vuetify.theme.dark = true;
+      this.theme = true;
+      localStorage.theme = "dark";
     } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
       this.$vuetify.theme.dark = false;
+      this.theme = true;
+      localStorage.theme = "light";
+    }
+  },
+  watch: {
+    theme(newValue, oldValue) {
+      this.$vuetify.theme.dark = newValue;
+      if (newValue) {
+        localStorage.theme = "dark";
+      } else {
+        localStorage.theme = "light";
+      }
     }
   },
   computed: mapState(["nameApp"]),
