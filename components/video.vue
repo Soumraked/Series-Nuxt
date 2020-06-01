@@ -120,17 +120,22 @@
       ><v-icon>mdi-play</v-icon> Ir a...
     </v-btn>
     <!-- Pagination -->
+    <v-container>
+      <Disqus :id="this.id" :number="this.num" :exist="true" />
+    </v-container>
   </v-layout>
 </template>
 
 <script>
 import VideoPlayer from "./videoPlayer";
+import Disqus from "./Disqus";
 import axios from "axios";
 export default {
   props: ["data", "options"],
   name: "SerieVideo",
   components: {
-    VideoPlayer
+    VideoPlayer,
+    Disqus
   },
   data() {
     return {
@@ -143,6 +148,7 @@ export default {
       id: "",
       num: "",
       name: "",
+      title: "",
       keys: [],
 
       //Report Vars
@@ -165,6 +171,10 @@ export default {
     this.num = this.$route.params.id.toString().split("_")[1];
     //this.page = parseInt(this.$route.params.id.toString().split("_")[1], 10);
     this.name =
+      this.data.data.name +
+      "  " +
+      this.$route.params.id.toString().split("_")[1];
+    this.title =
       this.data.data.name +
       " - " +
       this.$route.params.id.toString().split("_")[1];
@@ -236,7 +246,7 @@ export default {
   },
   head() {
     return {
-      titleTemplate: this.name
+      titleTemplate: this.title
     };
   }
 };
