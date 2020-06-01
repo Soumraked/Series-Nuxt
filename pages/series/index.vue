@@ -25,22 +25,9 @@ export default {
   data() {
     return {};
   },
-  async asyncData({
-    isDev,
-    route,
-    store,
-    env,
-    params,
-    query,
-    req,
-    res,
-    redirect,
-    error
-  }) {
+  async asyncData({ store }) {
     try {
-      const data = await axios.get(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/getApi/getSerie"
-      );
+      const data = await axios.get(store.state.baseUrl + "/getApi/getSerie");
       let auxData = [];
       for (let i in data.data) {
         if (data.data[i].type == "Anime") {

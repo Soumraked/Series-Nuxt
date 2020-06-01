@@ -2,13 +2,7 @@
   <div>
     <v-container>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field
-          autocomplete="off"
-          v-model="name"
-          :rules="nameRules"
-          label="Nombre"
-          required
-        ></v-text-field>
+        <v-text-field autocomplete="off" v-model="name" :rules="nameRules" label="Nombre" required></v-text-field>
 
         <v-text-field
           autocomplete="off"
@@ -18,12 +12,7 @@
           required
         ></v-text-field>
 
-        <v-textarea
-          v-model="description"
-          :rules="descriptionRules"
-          label="Descripción"
-          required
-        ></v-textarea>
+        <v-textarea v-model="description" :rules="descriptionRules" label="Descripción" required></v-textarea>
 
         <v-row no-gutters>
           <v-col cols="12" sm="3">
@@ -89,12 +78,8 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dateModal = false"
-              >Cancel</v-btn
-            >
-            <v-btn text color="primary" @click="$refs.dialog.save(date)"
-              >OK</v-btn
-            >
+            <v-btn text color="primary" @click="dateModal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
           </v-date-picker>
         </v-dialog>
 
@@ -116,8 +101,7 @@
               @click="select"
               @click:close="remove(item)"
             >
-              <strong>{{ item }}</strong
-              >&nbsp;
+              <strong>{{ item }}</strong>&nbsp;
             </v-chip>
           </template>
         </v-combobox>
@@ -179,13 +163,9 @@
                 class="mr-4"
                 @click="validate"
                 :loading="loadingbtn"
-              >
-                Complete
-              </v-btn>
+              >Complete</v-btn>
 
-              <v-btn color="error" class="mr-4" @click="reset">
-                Reset Form
-              </v-btn>
+              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -194,13 +174,7 @@
               <v-card-text>{{ mensaje }}</v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  :loading="loadingbtn"
-                  @click="dialog = false"
-                  >Ok</v-btn
-                >
+                <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -211,6 +185,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import axios from "axios";
 const pattern = new RegExp("^[A-Z,0-9]+$", "i");
 export default {
@@ -248,11 +223,10 @@ export default {
   created() {
     this.getItems();
   },
+  computed: mapState(["baseUrl"]),
   methods: {
     async getItems() {
-      let data = await axios.get(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/getApi/getGenres"
-      );
+      let data = await axios.get(this.baseUrl + "/getApi/getGenres");
       this.items = data.data;
     },
     async validate() {
@@ -262,9 +236,7 @@ export default {
           .toString()
           .toLowerCase()
           .replace(/\s+/g, "");
-        let data = await axios.get(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/serie/exist/${carpeta}`
-        );
+        let data = await axios.get(`${this.baseUrl}/serie/exist/${carpeta}`);
         if (data.data.data) {
           this.mensaje = "Ya existe serie a ingresar.";
           this.dialog = true;
@@ -303,15 +275,15 @@ export default {
         );
 
         let coverPost = await axios.post(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/image/upload/${carpeta}/cover`,
+          `${this.baseUrl}/image/upload/${carpeta}/cover`,
           cover
         );
         let chapterPost = await axios.post(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/image/upload/${carpeta}/chapter`,
+          `${this.baseUrl}/image/upload/${carpeta}/chapter`,
           chapter
         );
         let thumbnailPost = await axios.post(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/image/upload/${carpeta}/thumbnail`,
+          `${this.baseUrl}/image/upload/${carpeta}/thumbnail`,
           thumbnail
         );
 
@@ -321,23 +293,20 @@ export default {
 
         let finishedBool = this.selectFinished == "Finalizado";
 
-        let seriePost = await axios.post(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/serie/create`,
-          {
-            name: this.name,
-            nameAlternative: this.nameAlternative,
-            language: this.selectLanguage,
-            subtitles: this.selectSubtitle,
-            dateOrigin: this.date.toString(),
-            description: this.description,
-            finished: finishedBool.toString(),
-            coverImage: coverUrl,
-            thumbnailImage: thumbnailUrl,
-            chapterImage: chapterUrl,
-            genres: this.chips,
-            type: this.selectType
-          }
-        );
+        let seriePost = await axios.post(`${this.baseUrl}/serie/create`, {
+          name: this.name,
+          nameAlternative: this.nameAlternative,
+          language: this.selectLanguage,
+          subtitles: this.selectSubtitle,
+          dateOrigin: this.date.toString(),
+          description: this.description,
+          finished: finishedBool.toString(),
+          coverImage: coverUrl,
+          thumbnailImage: thumbnailUrl,
+          chapterImage: chapterUrl,
+          genres: this.chips,
+          type: this.selectType
+        });
 
         console.log(seriePost);
         this.loadingbtn = false;

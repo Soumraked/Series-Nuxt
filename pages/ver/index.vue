@@ -10,6 +10,9 @@ export default {
     return {
       titleTemplate: "404 Page Not Found"
     };
+  },
+  created() {
+    console.log("En ver");
   }
 };
 </script>

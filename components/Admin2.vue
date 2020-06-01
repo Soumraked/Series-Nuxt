@@ -9,13 +9,7 @@
         required
       ></v-select>
 
-      <v-file-input
-        v-model="textUrl"
-        label="File input"
-        outlined
-        dense
-        required
-      ></v-file-input>
+      <v-file-input v-model="textUrl" label="File input" outlined dense required></v-file-input>
     </v-form>
     <div>
       <v-row justify="center">
@@ -28,13 +22,9 @@
               class="mr-4"
               @click="validate"
               :loading="loadingbtn"
-            >
-              Complete
-            </v-btn>
+            >Complete</v-btn>
 
-            <v-btn color="error" class="mr-4" @click="reset">
-              Reset Form
-            </v-btn>
+            <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -43,13 +33,7 @@
             <v-card-text>{{ mensaje }}</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="green darken-1"
-                text
-                :loading="loadingbtn"
-                @click="dialog = false"
-                >Ok</v-btn
-              >
+              <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -60,6 +44,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 export default {
   data: () => ({
     loadingbtn: false,
@@ -75,11 +60,10 @@ export default {
   created() {
     this.getId();
   },
+  computed: mapState(["baseUrl"]),
   methods: {
     async getId() {
-      let data = await axios.get(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/getApi/getSerie"
-      );
+      let data = await axios.get(this.baseUrl + "/getApi/getSerie");
       for (let i in data.data) {
         this.items.push(data.data[i].name);
         this.id.push(data.data[i].id);
@@ -117,25 +101,19 @@ export default {
       reader.readAsText(this.textUrl);
     },
     async sendChapter(id, number, link) {
-      let dataChap = await axios.post(
-        `https://us-central1-monosotakos.cloudfunctions.net/api/chapter/create`,
-        {
-          id: id,
-          number: number,
-          link: link
-        }
-      );
+      let dataChap = await axios.post(`${this.baseUrl}/chapter/create`, {
+        id: id,
+        number: number,
+        link: link
+      });
       console.log(dataChap);
     },
     async sendChapter2(id, txt) {
       try {
-        let dataChap = await axios.post(
-          `https://us-central1-monosotakos.cloudfunctions.net/api/chapter/create2`,
-          {
-            id: id,
-            chapters: txt
-          }
-        );
+        let dataChap = await axios.post(`${this.baseUrl}/chapter/create2`, {
+          id: id,
+          chapters: txt
+        });
         this.mensaje = "Los datos fueron ingresados con éxito.";
         this.loadingbtn = false;
       } catch (error) {
@@ -143,7 +121,6 @@ export default {
           "Los datos ingresados son identicos a los ya almacenados en la base de datos, verifica estos para continuar con la carga de datos.";
         this.loadingbtn = false;
       }
-
       //console.log(dataChap)
     }
   }

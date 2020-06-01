@@ -3,16 +3,10 @@
     <v-container id="navbar">
       <v-toolbar>
         <a>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == false"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == true"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -35,7 +29,7 @@
 
         <!-- Search Start -->
         <v-col cols="12" sm="6" md="3">
-          <v-text-field hide-details label="Search (in coming)"></v-text-field>
+          <v-text-field autocomplete="off" hide-details label="Search (in coming)"></v-text-field>
         </v-col>
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
@@ -44,12 +38,7 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu
-            :close-on-content-click="false"
-            :nudge-width="200"
-            left
-            offset-y
-          >
+          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -73,9 +62,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">
-                      {{ user }}
-                    </v-list-item-title>
+                    <v-list-item-title v-if="session">{{ user }}</v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -100,10 +87,7 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item
-                    @click="toRedirect('/admin')"
-                    v-if="rol == 'admin'"
-                  >
+                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -127,16 +111,10 @@
         <!-- <v-icon @click="drawer = true">mdi-apps</v-icon> -->
         <v-icon @click="drawer = true">mdi-menu</v-icon>
         <a>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == false"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == true"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -145,12 +123,7 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu
-            :close-on-content-click="false"
-            :nudge-width="200"
-            left
-            offset-y
-          >
+          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -174,9 +147,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">
-                      {{ user }}
-                    </v-list-item-title>
+                    <v-list-item-title v-if="session">{{ user }}</v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -202,10 +173,7 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item
-                    @click="toRedirect('/admin')"
-                    v-if="rol == 'admin'"
-                  >
+                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -224,10 +192,7 @@
 
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-          >
+          <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
             <v-list-item @click="toRedirect('/')">
               <v-list-item-action>
                 <v-list-item-icon>
@@ -265,10 +230,7 @@
             </v-list-item>
 
             <v-list-item>
-              <v-text-field
-                hide-details
-                label="Search (in coming)"
-              ></v-text-field>
+              <v-text-field autocomplete="off" hide-details label="Search (in coming)"></v-text-field>
               <v-btn icon>
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
@@ -289,20 +251,13 @@
         <v-window>
           <v-window-item>
             <v-card-text>
-              <v-text-field
-                label="Nickname"
-                type="text"
-                autocomplete="off"
-                v-model="nicknameUser"
-              ></v-text-field>
-              <v-text-field
-                label="Password"
-                type="password"
-                v-model="passwordUser"
-              ></v-text-field>
-              <span class="caption grey--text text--darken-1">{{
+              <v-text-field label="Nickname" type="text" autocomplete="off" v-model="nicknameUser"></v-text-field>
+              <v-text-field label="Password" type="password" v-model="passwordUser"></v-text-field>
+              <span class="caption grey--text text--darken-1">
+                {{
                 mesajeAccount
-              }}</span>
+                }}
+              </span>
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -334,27 +289,23 @@
           <v-window-item :value="1">
             <v-card-text>
               <v-text-field label="Nickname" v-model="nickName"></v-text-field>
-              <span class="caption grey--text text--darken-1">{{
+              <span class="caption grey--text text--darken-1">
+                {{
                 mesajeAccount
-              }}</span>
+                }}
+              </span>
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <v-card-text>
-              <v-text-field
-                label="Password"
-                type="password"
-                v-model="password"
-              ></v-text-field>
-              <v-text-field
-                label="Confirm Password"
-                type="password"
-                v-model="passwordConfirm"
-              ></v-text-field>
-              <span class="caption grey--text text--darken-1">{{
+              <v-text-field label="Password" type="password" v-model="password"></v-text-field>
+              <v-text-field label="Confirm Password" type="password" v-model="passwordConfirm"></v-text-field>
+              <span class="caption grey--text text--darken-1">
+                {{
                 mesajeAccount
-              }}</span>
+                }}
+              </span>
             </v-card-text>
           </v-window-item>
 
@@ -366,9 +317,7 @@
                 height="128"
                 src="https://firebasestorage.googleapis.com/v0/b/monosotakos.appspot.com/o/nekoAvatar.jpg?alt=media"
               ></v-img>
-              <h3 class="title font-weight-light mb-2">
-                Welcome to Monos Otakos
-              </h3>
+              <h3 class="title font-weight-light mb-2">Welcome to Monos Otakos</h3>
               <span class="caption grey--text">Thanks for signing up!</span>
             </div>
           </v-window-item>
@@ -377,24 +326,11 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn
-            :disabled="step === 1 || step === 3"
-            text
-            @click="stepOption('-')"
-            >Back</v-btn
-          >
+          <v-btn :disabled="step === 1 || step === 3" text @click="stepOption('-')">Back</v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="step === 3" text @click="dialog = false"
-            >Continuar</v-btn
-          >
+          <v-btn v-if="step === 3" text @click="dialog = false">Continuar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            :disabled="step === 3"
-            color="primary"
-            depressed
-            @click="stepOption('+')"
-            >Next</v-btn
-          >
+          <v-btn :disabled="step === 3" color="primary" depressed @click="stepOption('+')">Next</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -481,14 +417,12 @@ export default {
           return "Account created";
       }
     },
-    ...mapState(["nameApp", "user", "pass", "session", "rol"])
+    ...mapState(["nameApp", "user", "pass", "session", "rol", "baseUrl"])
   },
   methods: {
     ...mapMutations(["login", "logout"]),
     async getUsers() {
-      let data = await axios.get(
-        `https://us-central1-monosotakos.cloudfunctions.net/api/auth/get`
-      );
+      let data = await axios.get(`${this.baseUrl}/auth/get`);
       this.users = data.data;
     },
     toRedirect(route) {
@@ -541,15 +475,12 @@ export default {
       try {
         var Crypto = require("crypto-js");
         var newPass = Crypto.SHA256(this.password.toString()).toString();
-        let data = await axios.post(
-          "https://us-central1-monosotakos.cloudfunctions.net/api/auth/create",
-          {
-            nick: this.nickName.toString(),
-            password: newPass,
-            passwordConfirm: newPass,
-            position: "user"
-          }
-        );
+        let data = await axios.post(this.baseUrl + "/auth/create", {
+          nick: this.nickName.toString(),
+          password: newPass,
+          passwordConfirm: newPass,
+          position: "user"
+        });
         this.mesajeAccount = "";
         this.step++;
         this.$store.commit("login", {
@@ -565,7 +496,6 @@ export default {
     signout() {
       this.nicknameUser = "";
       this.passwordUser = "";
-      console.log("Eliminar session");
       this.$store.commit("logout");
     },
     signUp() {
@@ -583,13 +513,10 @@ export default {
       } else {
         var Crypto = require("crypto-js");
         var newPass = Crypto.SHA256(this.passwordUser.toString()).toString();
-        let data = await axios.post(
-          "https://us-central1-monosotakos.cloudfunctions.net/api/auth/login",
-          {
-            nick: this.nicknameUser.toString(),
-            password: newPass
-          }
-        );
+        let data = await axios.post(this.baseUrl + "/auth/login", {
+          nick: this.nicknameUser.toString(),
+          password: newPass
+        });
         if (data.data.message == "Wrong password, try again.") {
           this.mesajeAccount = "Contraseña incorrecta, intente nuevamente.";
         } else if (

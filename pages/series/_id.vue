@@ -1,17 +1,12 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-container>
     <div v-if="exist">
-      <v-parallax :src="data.cover"></v-parallax>
+      <v-parallax :src="data.cover" height="200"></v-parallax>
       <info :data="data" />
-      <Chapter
-        :chapters="data.chapter"
-        :subtitles="data.subtitles"
-        :name="data.name"
-        :id="id"
-      />
+      <Chapter :chapters="data.chapter" :subtitles="data.subtitles" :name="data.name" :id="id" />
     </div>
     <div v-if="!exist">Esta Página no existe, vuelva al inico.</div>
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -23,22 +18,10 @@ export default {
     Info,
     Chapter
   },
-  async asyncData({
-    isDev,
-    route,
-    store,
-    env,
-    params,
-    query,
-    req,
-    res,
-    redirect,
-    error
-  }) {
+  async asyncData({ route, store }) {
     try {
       const data = await axios.get(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/getApi/getSerie/" +
-          route.params.id
+        store.state.baseUrl + "/getApi/getSerie/" + route.params.id
       );
       return { data: data.data, exist: true, id: route.params.id };
     } catch (error) {

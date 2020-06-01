@@ -17,26 +17,17 @@
     <!-- Opciones capítulo -->
     <!-- Opciones debajo del episodio -->
     <v-container>
-      <v-chip
-        class="ma-2"
-        outlined
-        @click="toEpisode(1)"
-        :disabled="disabledLeft"
-      >
-        <v-icon left>mdi-arrow-left-thick</v-icon> Anterior
+      <v-chip class="ma-2" outlined @click="toEpisode(1)" :disabled="disabledLeft">
+        <v-icon left>mdi-arrow-left-thick</v-icon>Anterior
       </v-chip>
 
       <v-chip class="ma-2" outlined @click="toEpisode(2)">
-        <v-icon left>mdi-format-list-checkbox</v-icon> Episodios
+        <v-icon left>mdi-format-list-checkbox</v-icon>Episodios
       </v-chip>
 
-      <v-chip
-        class="ma-2"
-        outlined
-        @click="toEpisode(3)"
-        :disabled="disabledRight"
-      >
-        Siguiente <v-icon right>mdi-arrow-right-thick</v-icon>
+      <v-chip class="ma-2" outlined @click="toEpisode(3)" :disabled="disabledRight">
+        Siguiente
+        <v-icon right>mdi-arrow-right-thick</v-icon>
       </v-chip>
     </v-container>
     <!-- Opciones debajo del episodio -->
@@ -45,24 +36,17 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" scrollable max-width="400px">
         <template v-slot:activator="{ on }">
-          <v-btn
-            outlined
-            v-on="on"
-            @click="(sendReport = false), (dialogm1 = '')"
-            >Reportar Episodio<v-icon>mdi-flag-variant</v-icon></v-btn
-          >
+          <v-btn outlined v-on="on" @click="(sendReport = false), (dialogm1 = '')">
+            Reportar Episodio
+            <v-icon>mdi-flag-variant</v-icon>
+          </v-btn>
         </template>
         <v-card v-if="!sendReport">
           <v-card-title>Reportar capítulo</v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 270px;">
             <v-radio-group v-model="dialogm1">
-              <v-radio
-                v-for="(item, i) in reportList"
-                :key="i"
-                :label="item"
-                :value="i"
-              ></v-radio>
+              <v-radio v-for="(item, i) in reportList" :key="i" :label="item" :value="i"></v-radio>
             </v-radio-group>
             <v-text-field
               autocomplete="off"
@@ -75,9 +59,7 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn color="blue darken-1" text @click="dialog = false"
-              >Cerrar</v-btn
-            >
+            <v-btn color="blue darken-1" text @click="dialog = false">Cerrar</v-btn>
             <v-btn color="blue darken-1" text @click="report">Enviar</v-btn>
           </v-card-actions>
         </v-card>
@@ -85,9 +67,7 @@
           <v-card-title>Reportar capítulo</v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 55px;">
-            <h3 class="pa-0 ma-0 pt-3">
-              Su reporte a sido ingresado con éxito
-            </h3>
+            <h3 class="pa-0 ma-0 pt-3">Su reporte a sido ingresado con éxito</h3>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
@@ -102,22 +82,14 @@
     <!-- Pagination -->
     <v-container>
       <div class="text-center pagination1">
-        <v-pagination
-          v-model="page"
-          :length="keys.length"
-          total-visible="7"
-        ></v-pagination>
+        <v-pagination v-model="page" :length="keys.length" total-visible="7"></v-pagination>
       </div>
       <div class="text-center pagination2">
-        <v-pagination
-          v-model="page"
-          :length="keys.length"
-          total-visible="12"
-        ></v-pagination>
+        <v-pagination v-model="page" :length="keys.length" total-visible="12"></v-pagination>
       </div>
     </v-container>
-    <v-btn outlined @click="toChapter(1)"
-      ><v-icon>mdi-play</v-icon> Ir a...
+    <v-btn outlined @click="toChapter(1)">
+      <v-icon>mdi-play</v-icon>Ir a...
     </v-btn>
     <!-- Pagination -->
     <v-container>
@@ -130,6 +102,7 @@
 import VideoPlayer from "./videoPlayer";
 import Disqus from "./Disqus";
 import axios from "axios";
+import { mapState } from "vuex";
 export default {
   props: ["data", "options"],
   name: "SerieVideo",
@@ -166,23 +139,19 @@ export default {
       //
     };
   },
+  computed: mapState(["baseUrl"]),
   created() {
-    this.id = this.$route.params.id.toString().split("_")[0];
-    this.num = this.$route.params.id.toString().split("_")[1];
+    this.id = this.$route.params.id.toString();
+    this.num = this.$route.params.id2.toString();
     //this.page = parseInt(this.$route.params.id.toString().split("_")[1], 10);
-    this.name =
-      this.data.data.name +
-      "  " +
-      this.$route.params.id.toString().split("_")[1];
+    this.name = this.data.data.name + "  " + this.$route.params.id2.toString();
     this.title =
-      this.data.data.name +
-      " - " +
-      this.$route.params.id.toString().split("_")[1];
+      this.data.data.name + " - " + this.$route.params.id2.toString();
     this.keys = this.data.data.keys.sort();
 
     const keysConst = this.data.data.keys.sort();
-    const idC = this.$route.params.id.toString().split("_")[1];
-    const numC = this.$route.params.id.toString().split("_")[1];
+    const idC = this.$route.params.id2.toString();
+    const numC = this.$route.params.id2.toString();
 
     const c = keysConst.indexOf(idC);
     this.page = c + 1;
@@ -216,32 +185,29 @@ export default {
         message = this.reportList[this.dialogm1];
       }
       this.sendReport = true;
-      let report = await axios.post(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/report/create",
-        {
-          id: `${this.id}`,
-          number: `${this.num}`,
-          message: message
-        }
-      );
+      let report = await axios.post(this.baseUrl + "/report/create", {
+        id: `${this.id}`,
+        number: `${this.num}`,
+        message: message
+      });
     },
     toEpisode(option) {
       switch (option) {
         case 1:
-          this.$router.push(`/ver/${this.id}_${this.previousChapter}`);
+          this.$router.push(`/ver/${this.id}/${this.previousChapter}`);
           break;
         case 2:
           this.$router.push(`/series/${this.id}`);
           break;
         case 3:
-          this.$router.push(`/ver/${this.id}_${this.nextChapter}`);
+          this.$router.push(`/ver/${this.id}/${this.nextChapter}`);
           break;
         default:
           console.log("Error desconocido.");
       }
     },
     toChapter(option) {
-      this.$router.push(`/ver/${this.id}_${this.keys[this.page - 1]}`);
+      this.$router.push(`/ver/${this.id}/${this.keys[this.page - 1]}`);
     }
   },
   head() {

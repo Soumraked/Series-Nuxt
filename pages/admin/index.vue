@@ -3,12 +3,7 @@
     <v-container class="px-0" fluid v-if="session">
       <v-radio-group v-model="radioGroup">
         <v-flex :wrap="true" class="d-flex flex-wrap justify-space-around">
-          <v-radio
-            v-for="(item, index) in option"
-            :key="index"
-            :label="item"
-            :value="index + 1"
-          ></v-radio>
+          <v-radio v-for="(item, index) in option" :key="index" :label="item" :value="index + 1"></v-radio>
         </v-flex>
       </v-radio-group>
       <Admin1 v-if="radioGroup == 1" />
@@ -17,9 +12,7 @@
     </v-container>
     <v-container v-if="!session">
       <v-layout column justify-center align-center>
-        <h3>
-          No cuentas con los permisos necesarios para ingresar a este apartado.
-        </h3>
+        <h3>No cuentas con los permisos necesarios para ingresar a este apartado.</h3>
       </v-layout>
     </v-container>
   </div>

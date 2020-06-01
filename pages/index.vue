@@ -19,37 +19,24 @@
 <script>
 import Card from "../components/cardChapter";
 import { mapState } from "vuex";
+import { mapActions } from "vuex";
 import axios from "axios";
 export default {
   components: {
     Card
   },
   data() {
-    return {};
+    return {
+      load: false
+    };
   },
-  async asyncData({
-    isDev,
-    route,
-    store,
-    env,
-    params,
-    query,
-    req,
-    res,
-    redirect,
-    error
-  }) {
-    try {
-      const data = await axios.get(
-        "https://us-central1-monosotakos.cloudfunctions.net/api/last/get"
-      );
-      return { seriesData: data.data.slice(0, 24) };
-    } catch (error) {
-      return { error: error };
-      console.log(error);
-    }
+  created() {
+    this.$store.dispatch("firstLoad");
   },
-  computed: mapState(["nameApp"]),
+  computed: mapState(["nameApp", "seriesData"]),
+  methods: {
+    ...mapActions(["firstLoad"])
+  },
   head() {
     return {
       titleTemplate: this.nameApp
