@@ -14,6 +14,10 @@ import Info from "../../components/Info";
 import Chapter from "../../components/Chapter";
 import axios from "axios";
 export default {
+  // validate({ params }) {
+  //   //console.log(/^\d+$/.test(params.id));
+  //   return true;
+  // },
   components: {
     Info,
     Chapter

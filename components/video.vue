@@ -1,5 +1,5 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-container>
     <!-- Reproductor -->
     <v-container>
       <h2 class="pa-0 ma-0 pt-12">{{ name }}</h2>
@@ -17,7 +17,12 @@
     <!-- Opciones capítulo -->
     <!-- Opciones debajo del episodio -->
     <v-container>
-      <v-chip class="ma-2" outlined @click="toEpisode(1)" :disabled="disabledLeft">
+      <v-chip
+        class="ma-2"
+        outlined
+        @click="toEpisode(1)"
+        :disabled="disabledLeft"
+      >
         <v-icon left>mdi-arrow-left-thick</v-icon>Anterior
       </v-chip>
 
@@ -25,18 +30,39 @@
         <v-icon left>mdi-format-list-checkbox</v-icon>Episodios
       </v-chip>
 
-      <v-chip class="ma-2" outlined @click="toEpisode(3)" :disabled="disabledRight">
+      <v-chip
+        class="ma-2"
+        outlined
+        @click="toEpisode(3)"
+        :disabled="disabledRight"
+      >
         Siguiente
         <v-icon right>mdi-arrow-right-thick</v-icon>
       </v-chip>
     </v-container>
     <!-- Opciones debajo del episodio -->
 
+    <!-- Pagination -->
+    <div class="text-center ">
+      <v-pagination
+        v-model="page"
+        :length="keys.length"
+        total-visible="14"
+      ></v-pagination>
+    </div>
+    <!-- Pagination -->
+
+    <v-divider></v-divider>
+
     <!-- Reportar episodio -->
-    <v-row justify="center">
+    <v-row class="my-4" justify="center">
       <v-dialog v-model="dialog" scrollable max-width="400px">
         <template v-slot:activator="{ on }">
-          <v-btn outlined v-on="on" @click="(sendReport = false), (dialogm1 = '')">
+          <v-btn
+            outlined
+            v-on="on"
+            @click="(sendReport = false), (dialogm1 = '')"
+          >
             Reportar Episodio
             <v-icon>mdi-flag-variant</v-icon>
           </v-btn>
@@ -46,7 +72,12 @@
           <v-divider></v-divider>
           <v-card-text style="height: 270px;">
             <v-radio-group v-model="dialogm1">
-              <v-radio v-for="(item, i) in reportList" :key="i" :label="item" :value="i"></v-radio>
+              <v-radio
+                v-for="(item, i) in reportList"
+                :key="i"
+                :label="item"
+                :value="i"
+              ></v-radio>
             </v-radio-group>
             <v-text-field
               autocomplete="off"
@@ -59,7 +90,9 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn color="blue darken-1" text @click="dialog = false">Cerrar</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false"
+              >Cerrar</v-btn
+            >
             <v-btn color="blue darken-1" text @click="report">Enviar</v-btn>
           </v-card-actions>
         </v-card>
@@ -67,7 +100,9 @@
           <v-card-title>Reportar capítulo</v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 55px;">
-            <h3 class="pa-0 ma-0 pt-3">Su reporte a sido ingresado con éxito</h3>
+            <h3 class="pa-0 ma-0 pt-3">
+              Su reporte a sido ingresado con éxito
+            </h3>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
@@ -79,35 +114,10 @@
     <!-- Reportar episodio -->
     <!-- Opciones capítulo -->
 
-    <!-- Pagination -->
-    <div class="text-center pagination1">
-      <v-pagination v-model="page2" :length="keys.length" total-visible="7"></v-pagination>
-    </div>
-    <div class="text-center pagination2">
-      <v-pagination v-model="page2" :length="keys.length" total-visible="12"></v-pagination>
-    </div>
-    <v-form v-model="validPage" class="text-center">
-      <v-layout column justify-center align-center>
-        <v-row>
-          <v-col>
-            <v-chip>
-              <v-text-field v-model="page" :rules="pageRules" required></v-text-field>
-            </v-chip>
-          </v-col>
-          <v-col>
-            <v-btn outlined @click="toChapter(1)">
-              <v-icon>mdi-play</v-icon>Ir a...
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-layout>
-    </v-form>
-
-    <!-- Pagination -->
     <v-container>
       <Disqus :id="this.id" :number="this.num" :exist="true" />
     </v-container>
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -124,10 +134,6 @@ export default {
   },
   data() {
     return {
-      radioGroup: "1",
-      validPage: false,
-      pageRules: [v => v > 0, v => v <= this.keys.length],
-      page2: 2,
       page: 2,
       play: false,
       disabledLeft: false,
@@ -222,18 +228,11 @@ export default {
         default:
           console.log("Error desconocido.");
       }
-    },
-    toChapter(option) {
-      if (this.page2 > 0 && this.page2 <= this.keys.length) {
-        this.$router.push(`/ver/${this.id}/${this.keys[this.page - 1]}`);
-      } else {
-        this.validPage = false;
-      }
     }
   },
   watch: {
-    page2(newValue) {
-      this.$router.push(`/ver/${this.id}/${this.keys[this.page2 - 1]}`);
+    page(newValue) {
+      this.$router.push(`/ver/${this.id}/${this.keys[this.page - 1]}`);
     }
   },
   head() {

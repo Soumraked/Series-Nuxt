@@ -3,12 +3,9 @@
     <div v-if="exist">
       <Video :data="data" :options="options" />
     </div>
-    <v-layout
-      column
-      justify-center
-      align-center
-      v-if="!exist"
-    >Esta Página no existe, vuelva al inico.</v-layout>
+    <v-layout column justify-center align-center v-if="!exist"
+      >Esta Página no existe, vuelva al inico.</v-layout
+    >
   </div>
 </template>
 
