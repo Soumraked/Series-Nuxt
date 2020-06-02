@@ -22,9 +22,6 @@ export default {
   components: {
     Card
   },
-  data() {
-    return {};
-  },
   async asyncData({ store }) {
     try {
       const data = await axios.get(store.state.baseUrl + "/getApi/getSerie");

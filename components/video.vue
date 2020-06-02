@@ -80,17 +80,29 @@
     <!-- Opciones capítulo -->
 
     <!-- Pagination -->
-    <v-container>
-      <div class="text-center pagination1">
-        <v-pagination v-model="page" :length="keys.length" total-visible="7"></v-pagination>
-      </div>
-      <div class="text-center pagination2">
-        <v-pagination v-model="page" :length="keys.length" total-visible="12"></v-pagination>
-      </div>
-    </v-container>
-    <v-btn outlined @click="toChapter(1)">
-      <v-icon>mdi-play</v-icon>Ir a...
-    </v-btn>
+    <div class="text-center pagination1">
+      <v-pagination v-model="page2" :length="keys.length" total-visible="7"></v-pagination>
+    </div>
+    <div class="text-center pagination2">
+      <v-pagination v-model="page2" :length="keys.length" total-visible="12"></v-pagination>
+    </div>
+    <v-form v-model="validPage" class="text-center">
+      <v-layout column justify-center align-center>
+        <v-row>
+          <v-col>
+            <v-chip>
+              <v-text-field v-model="page" :rules="pageRules" required></v-text-field>
+            </v-chip>
+          </v-col>
+          <v-col>
+            <v-btn outlined @click="toChapter(1)">
+              <v-icon>mdi-play</v-icon>Ir a...
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-layout>
+    </v-form>
+
     <!-- Pagination -->
     <v-container>
       <Disqus :id="this.id" :number="this.num" :exist="true" />
@@ -112,6 +124,10 @@ export default {
   },
   data() {
     return {
+      radioGroup: "1",
+      validPage: false,
+      pageRules: [v => v > 0, v => v <= this.keys.length],
+      page2: 2,
       page: 2,
       play: false,
       disabledLeft: false,
@@ -154,7 +170,8 @@ export default {
     const numC = this.$route.params.id2.toString();
 
     const c = keysConst.indexOf(idC);
-    this.page = c + 1;
+    this.page = parseInt(c + 1, 10);
+    this.page2 = parseInt(c + 1, 10);
     const n = c + 1;
     const p = c - 1;
 
@@ -207,7 +224,16 @@ export default {
       }
     },
     toChapter(option) {
-      this.$router.push(`/ver/${this.id}/${this.keys[this.page - 1]}`);
+      if (this.page2 > 0 && this.page2 <= this.keys.length) {
+        this.$router.push(`/ver/${this.id}/${this.keys[this.page - 1]}`);
+      } else {
+        this.validPage = false;
+      }
+    }
+  },
+  watch: {
+    page2(newValue) {
+      this.$router.push(`/ver/${this.id}/${this.keys[this.page2 - 1]}`);
     }
   },
   head() {
