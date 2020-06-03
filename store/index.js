@@ -9,29 +9,28 @@ export const state = () => ({
   session: false,
   rol: "",
   seriesData: [],
-  first: true
+  first: true,
+  token: ""
 });
 
 export const mutations = {
-  login(state, { user, pass, rol }) {
+  login(state, { user, rol, token }) {
     state.user = user;
-    state.pass = pass;
-    state.rol = rol;
+    state.token = token;
     state.session = true;
+    state.rol = rol;
     localStorage.user = user;
-    localStorage.pass = pass;
+    localStorage.token = token;
     localStorage.rol = rol;
-    localStorage.session = true;
   },
   logout(state) {
     state.user = "";
-    state.pass = "";
-    state.rol = "";
     state.session = false;
+    state.token = "";
+    state.rol = "";
     localStorage.user = "";
-    localStorage.pass = "";
+    localStorage.token = "";
     localStorage.rol = "";
-    localStorage.session = false;
   },
   setSeriesData(state, payload) {
     state.seriesData = payload;

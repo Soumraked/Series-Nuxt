@@ -3,10 +3,16 @@
     <v-container id="navbar">
       <v-toolbar>
         <a>
-          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
+          <v-toolbar-title
+            @click="toRedirect('/')"
+            v-if="$vuetify.theme.dark == false"
+          >
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
+          <v-toolbar-title
+            @click="toRedirect('/')"
+            v-if="$vuetify.theme.dark == true"
+          >
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -29,7 +35,11 @@
 
         <!-- Search Start -->
         <v-col cols="12" sm="6" md="3">
-          <v-text-field autocomplete="off" hide-details label="Search (in coming)"></v-text-field>
+          <v-text-field
+            autocomplete="off"
+            hide-details
+            label="Search (in coming)"
+          ></v-text-field>
         </v-col>
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
@@ -38,7 +48,12 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
+          <v-menu
+            :close-on-content-click="false"
+            :nudge-width="200"
+            left
+            offset-y
+          >
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -62,7 +77,9 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">{{ user }}</v-list-item-title>
+                    <v-list-item-title v-if="session">{{
+                      user
+                    }}</v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -87,7 +104,10 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
+                  <v-list-item
+                    @click="toRedirect('/admin')"
+                    v-if="rol == 'admin'"
+                  >
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -111,10 +131,16 @@
         <!-- <v-icon @click="drawer = true">mdi-apps</v-icon> -->
         <v-icon @click="drawer = true">mdi-menu</v-icon>
         <a>
-          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
+          <v-toolbar-title
+            @click="toRedirect('/')"
+            v-if="$vuetify.theme.dark == false"
+          >
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
+          <v-toolbar-title
+            @click="toRedirect('/')"
+            v-if="$vuetify.theme.dark == true"
+          >
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -123,7 +149,12 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
+          <v-menu
+            :close-on-content-click="false"
+            :nudge-width="200"
+            left
+            offset-y
+          >
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -147,7 +178,9 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">{{ user }}</v-list-item-title>
+                    <v-list-item-title v-if="session">{{
+                      user
+                    }}</v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -173,7 +206,10 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
+                  <v-list-item
+                    @click="toRedirect('/admin')"
+                    v-if="rol == 'admin'"
+                  >
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -192,7 +228,10 @@
 
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
-          <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <v-list-item-group
+            v-model="group"
+            active-class="deep-purple--text text--accent-4"
+          >
             <v-list-item @click="toRedirect('/')">
               <v-list-item-action>
                 <v-list-item-icon>
@@ -230,7 +269,11 @@
             </v-list-item>
 
             <v-list-item>
-              <v-text-field autocomplete="off" hide-details label="Search (in coming)"></v-text-field>
+              <v-text-field
+                autocomplete="off"
+                hide-details
+                label="Search (in coming)"
+              ></v-text-field>
               <v-btn icon>
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
@@ -251,12 +294,19 @@
         <v-window>
           <v-window-item>
             <v-card-text>
-              <v-text-field label="Nickname" type="text" autocomplete="off" v-model="nicknameUser"></v-text-field>
-              <v-text-field label="Password" type="password" v-model="passwordUser"></v-text-field>
+              <v-text-field
+                label="Nickname"
+                type="text"
+                autocomplete="off"
+                v-model="nicknameUser"
+              ></v-text-field>
+              <v-text-field
+                label="Password"
+                type="password"
+                v-model="passwordUser"
+              ></v-text-field>
               <span class="caption grey--text text--darken-1">
-                {{
-                mesajeAccount
-                }}
+                {{ mesajeAccount }}
               </span>
             </v-card-text>
           </v-window-item>
@@ -288,23 +338,31 @@
         <v-window v-model="step">
           <v-window-item :value="1">
             <v-card-text>
-              <v-text-field label="Nickname" v-model="nickName"></v-text-field>
+              <v-text-field
+                label="Nickname"
+                v-model="nickName"
+                :rules="nickNameRules"
+              ></v-text-field>
               <span class="caption grey--text text--darken-1">
-                {{
-                mesajeAccount
-                }}
+                {{ mesajeAccount }}
               </span>
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <v-card-text>
-              <v-text-field label="Password" type="password" v-model="password"></v-text-field>
-              <v-text-field label="Confirm Password" type="password" v-model="passwordConfirm"></v-text-field>
+              <v-text-field
+                label="Password"
+                type="password"
+                v-model="password"
+              ></v-text-field>
+              <v-text-field
+                label="Confirm Password"
+                type="password"
+                v-model="passwordConfirm"
+              ></v-text-field>
               <span class="caption grey--text text--darken-1">
-                {{
-                mesajeAccount
-                }}
+                {{ mesajeAccount }}
               </span>
             </v-card-text>
           </v-window-item>
@@ -317,7 +375,9 @@
                 height="128"
                 src="https://firebasestorage.googleapis.com/v0/b/monosotakos.appspot.com/o/nekoAvatar.jpg?alt=media"
               ></v-img>
-              <h3 class="title font-weight-light mb-2">Welcome to Monos Otakos</h3>
+              <h3 class="title font-weight-light mb-2">
+                Welcome to Monos Otakos
+              </h3>
               <span class="caption grey--text">Thanks for signing up!</span>
             </div>
           </v-window-item>
@@ -326,11 +386,24 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn :disabled="step === 1 || step === 3" text @click="stepOption('-')">Back</v-btn>
+          <v-btn
+            :disabled="step === 1 || step === 3"
+            text
+            @click="stepOption('-')"
+            >Back</v-btn
+          >
           <v-spacer></v-spacer>
-          <v-btn v-if="step === 3" text @click="dialog = false">Continuar</v-btn>
+          <v-btn v-if="step === 3" text @click="dialog = false"
+            >Continuar</v-btn
+          >
           <v-spacer></v-spacer>
-          <v-btn :disabled="step === 3" color="primary" depressed @click="stepOption('+')">Next</v-btn>
+          <v-btn
+            :disabled="step === 3"
+            color="primary"
+            depressed
+            @click="stepOption('+')"
+            >Next</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -342,7 +415,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-
+const pattern = new RegExp("^[A-Z,0-9]+$", "i");
 export default {
   data() {
     return {
@@ -352,6 +425,7 @@ export default {
       dialog: false,
       step: 1,
       nickName: "",
+      nickNameRules: [v => pattern.test(v), v => v != ""],
       password: "",
       passwordConfirm: "",
       validNickName: false,
@@ -373,7 +447,7 @@ export default {
       } else {
         this.$store.commit("login", {
           user: localStorage.user,
-          pass: localStorage.pass,
+          token: localStorage.token,
           rol: localStorage.rol
         });
       }
@@ -417,7 +491,15 @@ export default {
           return "Account created";
       }
     },
-    ...mapState(["nameApp", "user", "pass", "session", "rol", "baseUrl"])
+    ...mapState([
+      "nameApp",
+      "user",
+      "pass",
+      "session",
+      "rol",
+      "baseUrl",
+      "token"
+    ])
   },
   methods: {
     ...mapMutations(["login", "logout"]),
@@ -432,7 +514,11 @@ export default {
     },
     stepOption(option) {
       if (option == "+") {
-        if (this.step == 1 && this.nickName != "") {
+        if (
+          this.step == 1 &&
+          this.nickName != "" &&
+          pattern.test(this.nickName)
+        ) {
           if (this.nickName.length >= 3) {
             if (!this.users.includes(this.nickName.toString().toLowerCase())) {
               this.mesajeAccount =
@@ -440,11 +526,9 @@ export default {
               this.step++;
             } else {
               this.mesajeAccount = "El apodo ya se encuentra utilizado";
-              console.log("El apodo ya se encuentra utilizado");
             }
           } else {
             this.mesajeAccount = "El apodo debe tener más de 3 caracteres";
-            console.log("El apodo debe tener más de 3 caracteres");
           }
         } else if (
           this.step == 2 &&
@@ -457,13 +541,9 @@ export default {
             } else {
               this.mesajeAccount =
                 "Las contraseñas deben tener como mínimo 6 caracteres.";
-              console.log(
-                "Las contraseñas deben tener como mínimo 6 caracteres."
-              );
             }
           } else {
             this.mesajeAccount = "Las contraseñas no coinciden.";
-            console.log("Las contraseñas no coinciden.");
           }
         }
       } else if (option == "-") {
@@ -485,10 +565,9 @@ export default {
         this.step++;
         this.$store.commit("login", {
           user: this.nickName.toString(),
-          pass: newPass,
+          token: data.data.token,
           rol: "user"
         });
-        console.log("User successfully created.");
       } catch (error) {
         console.log(error);
       }
@@ -501,7 +580,7 @@ export default {
     signUp() {
       this.dialog = true;
       this.mesajeAccount =
-        "El nombre de usuario debe tener 3 o más caracteres.";
+        "El nombre de usuario debe tener 3 o más caracteres, no debe contener espacios y solo se aceptan letras y números.";
     },
     signIn() {
       this.dialogSignIn = true;
@@ -524,13 +603,12 @@ export default {
         ) {
           this.mesajeAccount =
             "El usuario ingresado no existe, verifique la información e intente nuevamente.";
-        } else if (data.data.message == "Login") {
+        } else if (data.data.token) {
           this.mesajeAccount = "Datos validados.";
-          console.log("Crear Session");
           this.$store.commit("login", {
-            user: data.data.nickname,
-            pass: newPass,
-            rol: data.data.position
+            user: data.data.nick,
+            token: data.data.token,
+            rol: data.data.rol
           });
           this.dialogSignIn = false;
         } else {

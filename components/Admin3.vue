@@ -93,14 +93,21 @@
                   </template>
                   <v-date-picker v-model="date" scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="dateModal = false">Cancel</v-btn>
-                    <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                    <v-btn text color="primary" @click="dateModal = false"
+                      >Cancel</v-btn
+                    >
+                    <v-btn text color="primary" @click="$refs.dialog.save(date)"
+                      >OK</v-btn
+                    >
                   </v-date-picker>
                 </v-dialog>
               </v-col>
               <!-- Date -->
 
-              <v-flex :wrap="true" class="d-flex flex-wrap justify-space-around">
+              <v-flex
+                :wrap="true"
+                class="d-flex flex-wrap justify-space-around"
+              >
                 <!-- Languague -->
                 <v-col cols="12" sm="6">
                   <v-select
@@ -172,7 +179,8 @@
                     @click="select"
                     @click:close="remove(item)"
                   >
-                    <strong>{{ item }}</strong>&nbsp;
+                    <strong>{{ item }}</strong
+                    >&nbsp;
                   </v-chip>
                 </template>
               </v-combobox>
@@ -194,7 +202,13 @@
             @change="readChapter"
           ></v-file-input>
 
-          <v-file-input v-model="textUrl" label="Chapters File" outlined dense required></v-file-input>
+          <v-file-input
+            v-model="textUrl"
+            label="Chapters File"
+            outlined
+            dense
+            required
+          ></v-file-input>
         </v-col>
         <!-- Chapter Image -->
 
@@ -216,9 +230,12 @@
             class="mr-4"
             @click="validate"
             :loading="loadingbtn"
-          >Enviar Datos</v-btn>
+            >Enviar Datos</v-btn
+          >
 
-          <v-btn color="error" class="mr-4" @click="reset">Reiniciar formulario</v-btn>
+          <v-btn color="error" class="mr-4" @click="reset"
+            >Reiniciar formulario</v-btn
+          >
         </template>
         <v-card>
           <v-card-title>
@@ -227,7 +244,13 @@
           <v-card-text>{{ mensaje }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
+            <v-btn
+              color="green darken-1"
+              text
+              :loading="loadingbtn"
+              @click="dialog = false"
+              >Ok</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -361,7 +384,6 @@ export default {
           this.mensaje = "Ya existe serie a ingresar.";
           this.dialog = true;
           this.loadingbtn = false;
-          console.log("No continuar");
         } else {
           this.mensaje = "Subiendo datos, espere por favor.";
           this.dialog = true;
@@ -418,7 +440,6 @@ export default {
           type: this.selectType
         });
 
-        console.log(seriePost);
         // this.loadingbtn = false;
         // this.mensaje = 'Acción completada con éxito.';
 
@@ -433,7 +454,6 @@ export default {
       reader.onload = e => {
         this.textExample = e.target.result;
         var txt = e.target.result.toString().split("\n");
-        //console.log(txt)
         var txtAll = [];
         for (let i in txt) {
           let aux = txt[i].split("\t");

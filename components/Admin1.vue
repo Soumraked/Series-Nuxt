@@ -2,7 +2,13 @@
   <div>
     <v-container>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field autocomplete="off" v-model="name" :rules="nameRules" label="Nombre" required></v-text-field>
+        <v-text-field
+          autocomplete="off"
+          v-model="name"
+          :rules="nameRules"
+          label="Nombre"
+          required
+        ></v-text-field>
 
         <v-text-field
           autocomplete="off"
@@ -12,7 +18,12 @@
           required
         ></v-text-field>
 
-        <v-textarea v-model="description" :rules="descriptionRules" label="Descripción" required></v-textarea>
+        <v-textarea
+          v-model="description"
+          :rules="descriptionRules"
+          label="Descripción"
+          required
+        ></v-textarea>
 
         <v-row no-gutters>
           <v-col cols="12" sm="3">
@@ -78,8 +89,12 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dateModal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+            <v-btn text color="primary" @click="dateModal = false"
+              >Cancel</v-btn
+            >
+            <v-btn text color="primary" @click="$refs.dialog.save(date)"
+              >OK</v-btn
+            >
           </v-date-picker>
         </v-dialog>
 
@@ -101,7 +116,8 @@
               @click="select"
               @click:close="remove(item)"
             >
-              <strong>{{ item }}</strong>&nbsp;
+              <strong>{{ item }}</strong
+              >&nbsp;
             </v-chip>
           </template>
         </v-combobox>
@@ -163,9 +179,12 @@
                 class="mr-4"
                 @click="validate"
                 :loading="loadingbtn"
-              >Complete</v-btn>
+                >Complete</v-btn
+              >
 
-              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
+              <v-btn color="error" class="mr-4" @click="reset"
+                >Reset Form</v-btn
+              >
             </template>
             <v-card>
               <v-card-title>
@@ -174,7 +193,13 @@
               <v-card-text>{{ mensaje }}</v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  :loading="loadingbtn"
+                  @click="dialog = false"
+                  >Ok</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -241,7 +266,6 @@ export default {
           this.mensaje = "Ya existe serie a ingresar.";
           this.dialog = true;
           this.loadingbtn = false;
-          console.log("No continuar");
         } else {
           this.mensaje = "Subiendo datos, espere por favor.";
           this.dialog = true;
@@ -307,8 +331,6 @@ export default {
           genres: this.chips,
           type: this.selectType
         });
-
-        console.log(seriePost);
         this.loadingbtn = false;
         this.mensaje = "Acción completada con éxito.";
       } catch (error) {

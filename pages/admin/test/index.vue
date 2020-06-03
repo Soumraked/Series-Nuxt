@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container v-if="session && rol == 'admin'">
+    <v-container v-if="auth">
       <v-container class="text-center">
         <h1>Datos de series</h1>
         <v-row>
@@ -53,10 +53,10 @@
         </v-row>
       </v-container>
     </v-container>
-    <v-container v-if="!session || rol != 'admin'">
+    <v-container v-if="!auth">
       <v-layout column justify-center align-center>
         <h3>
-          No cuentas con los permisos necesarios para ingresar a este apartado.
+          {{ message }}
         </h3>
       </v-layout>
     </v-container>
@@ -67,9 +67,13 @@
 import { throws } from "assert";
 import axios from "axios";
 import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
+      mountedFirst: false,
+      auth: false,
+      message: "",
       file: null,
       series: [],
       file2: null,
@@ -78,10 +82,17 @@ export default {
   },
   created() {
     this.getInfo();
-    //this.create();
+    this.message = "Comprobando permisos, espere un momento...";
+    if (this.mountedFirst) {
+      this.comprobarPermisos();
+    }
+  },
+  mounted() {
+    this.comprobarPermisos();
+    this.mountedFirst = true;
   },
   computed: {
-    ...mapState(["baseUrl", "session", "rol"])
+    ...mapState(["baseUrl", "rol", "token", "user"])
   },
   methods: {
     async getInfo() {
@@ -105,7 +116,6 @@ export default {
       zip.generateAsync({ type: "blob" }).then(function(content) {
         saveAs(content, "DataBase.zip");
       });
-      console.log("Descargando...");
     },
     create2() {
       var FileSaver = require("file-saver");
@@ -114,7 +124,6 @@ export default {
       var data = zip.folder("Users");
       for (let i in this.users) {
         let content = JSON.stringify(this.users[i]);
-        console.log(content);
         var blob = new Blob([content], { type: "json  ;charset=utf-8" });
         var name = this.users[i].nick + ".json";
         data.file(name, blob, { type: "json  ;charset=utf-8" });
@@ -123,7 +132,6 @@ export default {
       zip.generateAsync({ type: "blob" }).then(function(content) {
         saveAs(content, "UsersDataBase.zip");
       });
-      console.log("Descargando...");
     },
     cargar() {
       for (let i in this.file) {
@@ -142,7 +150,6 @@ export default {
       let data = await axios.post(`${this.baseUrl}/serie/create2`, {
         data: json
       });
-      console.log(data);
     },
     cargar21() {
       for (let i in this.file2) {
@@ -161,7 +168,35 @@ export default {
       let data = await axios.post(`${this.baseUrl}/auth/create2`, {
         data: json
       });
-      console.log(data);
+    },
+    ...mapMutations(["logout"]),
+    async comprobarPermisos() {
+      const jwtDecode = require("jwt-decode");
+      var decoded = jwtDecode(this.token);
+      if (decoded.exp * 1000 < Date.now()) {
+        this.$store.commit("logout");
+        this.message =
+          "Las credenciales han expirado, prueba iniciando sesión nuevamente.";
+      } else {
+        if (
+          this.user.toLowerCase() == decoded.email.split("@monosotakos.ga")[0]
+        ) {
+          let data = await axios.post(`${this.baseUrl}/auth/auth`, {
+            nick: decoded.email.split("@monosotakos.ga")[0].toString(),
+            userId: decoded.user_id.toString()
+          });
+          if (data.data.rol == "admin") {
+            this.auth = true;
+          } else {
+            this.message =
+              "No cuentas con los permisos necesarios para ingresar a este apartado.";
+          }
+        } else {
+          this.message =
+            "Las credenciales no concuerdan, inicia sesión nuevamente y recarga la página para solucionar el problema.";
+          this.$store.commit("logout");
+        }
+      }
     }
   }
 };

@@ -9,7 +9,13 @@
         required
       ></v-select>
 
-      <v-file-input v-model="textUrl" label="File input" outlined dense required></v-file-input>
+      <v-file-input
+        v-model="textUrl"
+        label="File input"
+        outlined
+        dense
+        required
+      ></v-file-input>
     </v-form>
     <div>
       <v-row justify="center">
@@ -22,7 +28,8 @@
               class="mr-4"
               @click="validate"
               :loading="loadingbtn"
-            >Complete</v-btn>
+              >Complete</v-btn
+            >
 
             <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
           </template>
@@ -33,7 +40,13 @@
             <v-card-text>{{ mensaje }}</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                :loading="loadingbtn"
+                @click="dialog = false"
+                >Ok</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -85,18 +98,15 @@ export default {
       reader.onload = e => {
         this.textExample = e.target.result;
         var txt = e.target.result.toString().split("\n");
-        //console.log(txt)
         var txtAll = [];
         for (let i in txt) {
           let aux = txt[i].split("\t");
           if (aux[0].length > 0) {
             txtAll.push(aux);
             //this.sendChapter(this.id[this.items.indexOf(this.select)], aux[0], aux[1]);
-            //console.log(aux)
           }
         }
         this.sendChapter2(this.id[this.items.indexOf(this.select)], txtAll);
-        //console.log(txtAll);
       };
       reader.readAsText(this.textUrl);
     },
@@ -106,7 +116,6 @@ export default {
         number: number,
         link: link
       });
-      console.log(dataChap);
     },
     async sendChapter2(id, txt) {
       try {
@@ -121,7 +130,6 @@ export default {
           "Los datos ingresados son identicos a los ya almacenados en la base de datos, verifica estos para continuar con la carga de datos.";
         this.loadingbtn = false;
       }
-      //console.log(dataChap)
     }
   }
 };
