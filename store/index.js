@@ -3,6 +3,7 @@ import axios from "axios";
 export const state = () => ({
   nameApp: "Monos Otakos",
   baseUrl: "https://us-central1-monosotakos.cloudfunctions.net/api",
+  // baseUrl: "https://us-central1-zanmax.cloudfunctions.net/api",
   user: "",
   pass: "",
   session: false,

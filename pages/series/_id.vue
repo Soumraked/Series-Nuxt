@@ -3,7 +3,12 @@
     <div v-if="exist">
       <v-parallax :src="data.cover" height="200"></v-parallax>
       <info :data="data" />
-      <Chapter :chapters="data.chapter" :subtitles="data.subtitles" :name="data.name" :id="id" />
+      <Chapter
+        :chapters="data.chapter"
+        :subtitles="data.subtitles"
+        :name="data.name"
+        :id="id"
+      />
     </div>
     <div v-if="!exist">Esta Página no existe, vuelva al inico.</div>
   </v-container>
@@ -14,10 +19,6 @@ import Info from "../../components/Info";
 import Chapter from "../../components/Chapter";
 import axios from "axios";
 export default {
-  // validate({ params }) {
-  //   //console.log(/^\d+$/.test(params.id));
-  //   return true;
-  // },
   components: {
     Info,
     Chapter
