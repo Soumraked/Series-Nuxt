@@ -52,13 +52,26 @@
 
               <!-- Name -->
               <v-col class="px-5">
-                <v-text-field
-                  autocomplete="off"
+                <v-combobox
                   v-model="nameAlternative"
-                  :rules="nameAlternativeRules"
-                  label="Nombre alternativo (será la id)"
-                  required
-                ></v-text-field>
+                  chips
+                  clearable
+                  label="Nombres Alternativos"
+                  multiple
+                  prepend-icon="mdi-clipboard-check"
+                >
+                  <template v-slot:selection="{ attrs, item, select, selected }">
+                    <v-chip
+                      v-bind="attrs"
+                      :input-value="selected"
+                      close
+                      @click="select"
+                      @click:close="removeName(item)"
+                    >
+                      <strong>{{ item }}</strong>&nbsp;
+                    </v-chip>
+                  </template>
+                </v-combobox>
               </v-col>
               <!-- Name -->
 
@@ -93,21 +106,14 @@
                   </template>
                   <v-date-picker v-model="date" scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="dateModal = false"
-                      >Cancel</v-btn
-                    >
-                    <v-btn text color="primary" @click="$refs.dialog.save(date)"
-                      >OK</v-btn
-                    >
+                    <v-btn text color="primary" @click="dateModal = false">Cancel</v-btn>
+                    <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
                   </v-date-picker>
                 </v-dialog>
               </v-col>
               <!-- Date -->
 
-              <v-flex
-                :wrap="true"
-                class="d-flex flex-wrap justify-space-around"
-              >
+              <v-flex :wrap="true" class="d-flex flex-wrap justify-space-around">
                 <!-- Languague -->
                 <v-col cols="12" sm="6">
                   <v-select
@@ -179,8 +185,7 @@
                     @click="select"
                     @click:close="remove(item)"
                   >
-                    <strong>{{ item }}</strong
-                    >&nbsp;
+                    <strong>{{ item }}</strong>&nbsp;
                   </v-chip>
                 </template>
               </v-combobox>
@@ -202,13 +207,7 @@
             @change="readChapter"
           ></v-file-input>
 
-          <v-file-input
-            v-model="textUrl"
-            label="Chapters File"
-            outlined
-            dense
-            required
-          ></v-file-input>
+          <v-file-input v-model="textUrl" label="Chapters File" outlined dense required></v-file-input>
         </v-col>
         <!-- Chapter Image -->
 
@@ -230,12 +229,9 @@
             class="mr-4"
             @click="validate"
             :loading="loadingbtn"
-            >Enviar Datos</v-btn
-          >
+          >Enviar Datos</v-btn>
 
-          <v-btn color="error" class="mr-4" @click="reset"
-            >Reiniciar formulario</v-btn
-          >
+          <v-btn color="error" class="mr-4" @click="reset">Reiniciar formulario</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -244,13 +240,7 @@
           <v-card-text>{{ mensaje }}</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="green darken-1"
-              text
-              :loading="loadingbtn"
-              @click="dialog = false"
-              >Ok</v-btn
-            >
+            <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -287,11 +277,7 @@ export default {
       //</Name>
 
       //<Name>
-      nameAlternative: "",
-      nameAlternativeRules: [
-        v => !!v || "Name is required",
-        v => pattern.test(v) || "Este campo solo debe tener letras o números."
-      ],
+      nameAlternative: [],
       //</Name>
 
       //<Description>
@@ -366,6 +352,11 @@ export default {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
     },
+    //Name Alternative
+    removeName(item) {
+      this.nameAlternative.splice(this.nameAlternative.indexOf(item), 1);
+      this.nameAlternative = [...this.nameAlternative];
+    },
     //Obtain Genres from database
     async getItems() {
       let data = await axios.get(this.baseUrl + "/getApi/getGenres");
@@ -375,7 +366,7 @@ export default {
     async validate() {
       if (this.$refs.form.validate()) {
         this.loadingbtn = true;
-        let carpeta = this.nameAlternative
+        let carpeta = this.name
           .toString()
           .toLowerCase()
           .replace(/\s+/g, "");
@@ -394,7 +385,7 @@ export default {
     //Send data to database 2
     async send() {
       try {
-        let carpeta = this.nameAlternative
+        let carpeta = this.name
           .toString()
           .toLowerCase()
           .replace(/\s+/g, "");
@@ -439,10 +430,8 @@ export default {
           genres: this.chips,
           type: this.selectType
         });
-
         // this.loadingbtn = false;
         // this.mensaje = 'Acción completada con éxito.';
-
         this.sendChapterFile();
       } catch (error) {
         console.log(error.code);
@@ -462,10 +451,11 @@ export default {
           }
         }
         //Introduction ID
-        let id = this.nameAlternative
-          .toString()
-          .toLowerCase()
-          .replace(/\s+/g, "");
+        let a = this.name;
+        let b = a.replace(/[" "]/g, "-");
+        let c = b.replace(/[^a-zA-Z0-9-]/g, "");
+        let d = c.toLowerCase();
+        let id = d;
         this.sendChapter(id, txtAll);
       };
       reader.readAsText(this.textUrl);

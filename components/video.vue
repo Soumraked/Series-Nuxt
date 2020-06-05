@@ -17,12 +17,7 @@
     <!-- Opciones capítulo -->
     <!-- Opciones debajo del episodio -->
     <v-container>
-      <v-chip
-        class="ma-2"
-        outlined
-        @click="toEpisode(1)"
-        :disabled="disabledLeft"
-      >
+      <v-chip class="ma-2" outlined @click="toEpisode(1)" :disabled="disabledLeft">
         <v-icon left>mdi-arrow-left-thick</v-icon>Anterior
       </v-chip>
 
@@ -30,12 +25,7 @@
         <v-icon left>mdi-format-list-checkbox</v-icon>Episodios
       </v-chip>
 
-      <v-chip
-        class="ma-2"
-        outlined
-        @click="toEpisode(3)"
-        :disabled="disabledRight"
-      >
+      <v-chip class="ma-2" outlined @click="toEpisode(3)" :disabled="disabledRight">
         Siguiente
         <v-icon right>mdi-arrow-right-thick</v-icon>
       </v-chip>
@@ -43,12 +33,8 @@
     <!-- Opciones debajo del episodio -->
 
     <!-- Pagination -->
-    <div class="text-center ">
-      <v-pagination
-        v-model="page"
-        :length="keys.length"
-        total-visible="14"
-      ></v-pagination>
+    <div class="text-center">
+      <v-pagination v-model="page" :length="keys.length" total-visible="14"></v-pagination>
     </div>
     <!-- Pagination -->
 
@@ -58,11 +44,7 @@
     <v-row class="my-4" justify="center">
       <v-dialog v-model="dialog" scrollable max-width="400px">
         <template v-slot:activator="{ on }">
-          <v-btn
-            outlined
-            v-on="on"
-            @click="(sendReport = false), (dialogm1 = '')"
-          >
+          <v-btn outlined v-on="on" @click="(sendReport = false), (dialogm1 = '')">
             Reportar Episodio
             <v-icon>mdi-flag-variant</v-icon>
           </v-btn>
@@ -72,12 +54,7 @@
           <v-divider></v-divider>
           <v-card-text style="height: 270px;">
             <v-radio-group v-model="dialogm1">
-              <v-radio
-                v-for="(item, i) in reportList"
-                :key="i"
-                :label="item"
-                :value="i"
-              ></v-radio>
+              <v-radio v-for="(item, i) in reportList" :key="i" :label="item" :value="i"></v-radio>
             </v-radio-group>
             <v-text-field
               autocomplete="off"
@@ -90,9 +67,7 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn color="blue darken-1" text @click="dialog = false"
-              >Cerrar</v-btn
-            >
+            <v-btn color="blue darken-1" text @click="dialog = false">Cerrar</v-btn>
             <v-btn color="blue darken-1" text @click="report">Enviar</v-btn>
           </v-card-actions>
         </v-card>
@@ -100,9 +75,7 @@
           <v-card-title>Reportar capítulo</v-card-title>
           <v-divider></v-divider>
           <v-card-text style="height: 55px;">
-            <h3 class="pa-0 ma-0 pt-3">
-              Su reporte a sido ingresado con éxito
-            </h3>
+            <h3 class="pa-0 ma-0 pt-3">Su reporte a sido ingresado con éxito</h3>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
@@ -113,7 +86,7 @@
     </v-row>
     <!-- Reportar episodio -->
     <!-- Opciones capítulo -->
-
+    <Download :name="titleDownload" extension="mp4" :url="options.video.url" />
     <v-container>
       <Disqus :id="this.id" :number="this.num" :exist="true" />
     </v-container>
@@ -121,6 +94,7 @@
 </template>
 
 <script>
+import Download from "./download";
 import VideoPlayer from "./videoPlayer";
 import Disqus from "./Disqus";
 import axios from "axios";
@@ -130,7 +104,8 @@ export default {
   name: "SerieVideo",
   components: {
     VideoPlayer,
-    Disqus
+    Disqus,
+    Download
   },
   data() {
     return {
@@ -145,6 +120,7 @@ export default {
       name: "",
       title: "",
       keys: [],
+      titleDownload: "",
 
       //Report Vars
       sendReport: false,
@@ -167,6 +143,10 @@ export default {
     this.num = this.$route.params.id2.toString();
     //this.page = parseInt(this.$route.params.id.toString().split("_")[1], 10);
     this.name = this.data.data.name + "  " + this.$route.params.id2.toString();
+    this.titleDownload =
+      this.$route.params.id.toLowerCase().toString() +
+      "-" +
+      this.$route.params.id2.toString();
     this.title =
       this.data.data.name + " - " + this.$route.params.id2.toString();
     this.keys = this.data.data.keys.sort();

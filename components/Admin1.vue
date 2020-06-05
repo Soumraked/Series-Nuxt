@@ -2,28 +2,30 @@
   <div>
     <v-container>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field
-          autocomplete="off"
-          v-model="name"
-          :rules="nameRules"
-          label="Nombre"
-          required
-        ></v-text-field>
+        <v-text-field autocomplete="off" v-model="name" :rules="nameRules" label="Nombre" required></v-text-field>
 
-        <v-text-field
-          autocomplete="off"
+        <v-combobox
           v-model="nameAlternative"
-          :rules="nameAlternativeRules"
-          label="Nombre Alternativo (será id)"
-          required
-        ></v-text-field>
+          chips
+          clearable
+          label="Nombres Alternativos"
+          multiple
+          prepend-icon="mdi-clipboard-check"
+        >
+          <template v-slot:selection="{ attrs, item, select, selected }">
+            <v-chip
+              v-bind="attrs"
+              :input-value="selected"
+              close
+              @click="select"
+              @click:close="removeName(item)"
+            >
+              <strong>{{ item }}</strong>&nbsp;
+            </v-chip>
+          </template>
+        </v-combobox>
 
-        <v-textarea
-          v-model="description"
-          :rules="descriptionRules"
-          label="Descripción"
-          required
-        ></v-textarea>
+        <v-textarea v-model="description" :rules="descriptionRules" label="Descripción" required></v-textarea>
 
         <v-row no-gutters>
           <v-col cols="12" sm="3">
@@ -89,12 +91,8 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dateModal = false"
-              >Cancel</v-btn
-            >
-            <v-btn text color="primary" @click="$refs.dialog.save(date)"
-              >OK</v-btn
-            >
+            <v-btn text color="primary" @click="dateModal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
           </v-date-picker>
         </v-dialog>
 
@@ -116,8 +114,7 @@
               @click="select"
               @click:close="remove(item)"
             >
-              <strong>{{ item }}</strong
-              >&nbsp;
+              <strong>{{ item }}</strong>&nbsp;
             </v-chip>
           </template>
         </v-combobox>
@@ -179,12 +176,9 @@
                 class="mr-4"
                 @click="validate"
                 :loading="loadingbtn"
-                >Complete</v-btn
-              >
+              >Complete</v-btn>
 
-              <v-btn color="error" class="mr-4" @click="reset"
-                >Reset Form</v-btn
-              >
+              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -193,13 +187,7 @@
               <v-card-text>{{ mensaje }}</v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  :loading="loadingbtn"
-                  @click="dialog = false"
-                  >Ok</v-btn
-                >
+                <v-btn color="green darken-1" text :loading="loadingbtn" @click="dialog = false">Ok</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -228,11 +216,8 @@ export default {
     valid: true,
     name: "",
     nameRules: [v => !!v || "Name is required"],
-    nameAlternative: "",
-    nameAlternativeRules: [
-      v => !!v || "Name is required",
-      v => pattern.test(v) || "Este campo solo debe tener letras o números."
-    ],
+    nameAlternative: [],
+
     description: "",
     descriptionRules: [v => !!v || "Description is required"],
     selectLanguage: "Japones",
@@ -251,25 +236,37 @@ export default {
   computed: mapState(["baseUrl"]),
   methods: {
     async getItems() {
-      let data = await axios.get(this.baseUrl + "/getApi/getGenres");
-      this.items = data.data;
+      try {
+        let data = await axios.get(this.baseUrl + "/getApi/getGenres");
+        this.items = data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     async validate() {
       if (this.$refs.form.validate()) {
         this.loadingbtn = true;
-        let carpeta = this.nameAlternative
+        let carpeta = this.name
           .toString()
           .toLowerCase()
           .replace(/\s+/g, "");
-        let data = await axios.get(`${this.baseUrl}/serie/exist/${carpeta}`);
-        if (data.data.data) {
-          this.mensaje = "Ya existe serie a ingresar.";
+        try {
+          let data = await axios.get(`${this.baseUrl}/serie/exist/${carpeta}`);
+          if (data.data.data) {
+            this.mensaje = "Ya existe serie a ingresar.";
+            this.dialog = true;
+            this.loadingbtn = false;
+          } else {
+            this.mensaje = "Subiendo datos, espere por favor.";
+            this.dialog = true;
+            this.send();
+          }
+        } catch (error) {
+          this.mensaje =
+            "Error desconocido, intente nuevamente, si el error persiste contáctese con el desarrollador.";
           this.dialog = true;
           this.loadingbtn = false;
-        } else {
-          this.mensaje = "Subiendo datos, espere por favor.";
-          this.dialog = true;
-          this.send();
+          console.log(error);
         }
       }
     },
@@ -280,9 +277,13 @@ export default {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
     },
+    removeName(item) {
+      this.nameAlternative.splice(this.nameAlternative.indexOf(item), 1);
+      this.nameAlternative = [...this.nameAlternative];
+    },
     async send() {
       try {
-        let carpeta = this.nameAlternative
+        let carpeta = this.name
           .toString()
           .toLowerCase()
           .replace(/\s+/g, "");
@@ -334,6 +335,9 @@ export default {
         this.loadingbtn = false;
         this.mensaje = "Acción completada con éxito.";
       } catch (error) {
+        this.loadingbtn = false;
+        this.mensaje =
+          "Error desconocido, intente nuevamente, si el error persiste contáctese con el desarrollador.";
         console.log(error.code);
       }
     }

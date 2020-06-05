@@ -3,16 +3,10 @@
     <v-container id="navbar">
       <v-toolbar>
         <a>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == false"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == true"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -35,11 +29,7 @@
 
         <!-- Search Start -->
         <v-col cols="12" sm="6" md="3">
-          <v-text-field
-            autocomplete="off"
-            hide-details
-            label="Search (in coming)"
-          ></v-text-field>
+          <Search />
         </v-col>
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
@@ -48,12 +38,7 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu
-            :close-on-content-click="false"
-            :nudge-width="200"
-            left
-            offset-y
-          >
+          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -77,9 +62,11 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">{{
+                    <v-list-item-title v-if="session">
+                      {{
                       user
-                    }}</v-list-item-title>
+                      }}
+                    </v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -104,10 +91,7 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item
-                    @click="toRedirect('/admin')"
-                    v-if="rol == 'admin'"
-                  >
+                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -131,16 +115,10 @@
         <!-- <v-icon @click="drawer = true">mdi-apps</v-icon> -->
         <v-icon @click="drawer = true">mdi-menu</v-icon>
         <a>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == false"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == false">
             <span class="titleWhite">{{ nameApp }}</span>
           </v-toolbar-title>
-          <v-toolbar-title
-            @click="toRedirect('/')"
-            v-if="$vuetify.theme.dark == true"
-          >
+          <v-toolbar-title @click="toRedirect('/')" v-if="$vuetify.theme.dark == true">
             <span class="titleDark">{{ nameApp }}</span>
           </v-toolbar-title>
         </a>
@@ -149,12 +127,7 @@
 
         <!-- Options Navbar Start -->
         <div class="text-center">
-          <v-menu
-            :close-on-content-click="false"
-            :nudge-width="200"
-            left
-            offset-y
-          >
+          <v-menu :close-on-content-click="false" :nudge-width="200" left offset-y>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
                 <v-avatar>
@@ -178,9 +151,11 @@
 
                   <v-list-item-content>
                     <v-list-item-title v-if="!session">User</v-list-item-title>
-                    <v-list-item-title v-if="session">{{
+                    <v-list-item-title v-if="session">
+                      {{
                       user
-                    }}</v-list-item-title>
+                      }}
+                    </v-list-item-title>
                     <v-list-item-subtitle>Monos Otakos</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -206,10 +181,7 @@
                   </v-list-item>
                 </div>
                 <div v-if="session">
-                  <v-list-item
-                    @click="toRedirect('/admin')"
-                    v-if="rol == 'admin'"
-                  >
+                  <v-list-item @click="toRedirect('/admin')" v-if="rol == 'admin'">
                     <v-list-item-title>Administrar</v-list-item-title>
                   </v-list-item>
                   <v-list-item disabled>
@@ -228,10 +200,7 @@
 
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-          >
+          <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
             <v-list-item @click="toRedirect('/')">
               <v-list-item-action>
                 <v-list-item-icon>
@@ -269,11 +238,7 @@
             </v-list-item>
 
             <v-list-item>
-              <v-text-field
-                autocomplete="off"
-                hide-details
-                label="Search (in coming)"
-              ></v-text-field>
+              <Search />
               <v-btn icon>
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
@@ -294,20 +259,9 @@
         <v-window>
           <v-window-item>
             <v-card-text>
-              <v-text-field
-                label="Nickname"
-                type="text"
-                autocomplete="off"
-                v-model="nicknameUser"
-              ></v-text-field>
-              <v-text-field
-                label="Password"
-                type="password"
-                v-model="passwordUser"
-              ></v-text-field>
-              <span class="caption grey--text text--darken-1">
-                {{ mesajeAccount }}
-              </span>
+              <v-text-field label="Nickname" type="text" autocomplete="off" v-model="nicknameUser"></v-text-field>
+              <v-text-field label="Password" type="password" v-model="passwordUser"></v-text-field>
+              <span class="caption grey--text text--darken-1">{{ mesajeAccount }}</span>
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -338,32 +292,16 @@
         <v-window v-model="step">
           <v-window-item :value="1">
             <v-card-text>
-              <v-text-field
-                label="Nickname"
-                v-model="nickName"
-                :rules="nickNameRules"
-              ></v-text-field>
-              <span class="caption grey--text text--darken-1">
-                {{ mesajeAccount }}
-              </span>
+              <v-text-field label="Nickname" v-model="nickName" :rules="nickNameRules"></v-text-field>
+              <span class="caption grey--text text--darken-1">{{ mesajeAccount }}</span>
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <v-card-text>
-              <v-text-field
-                label="Password"
-                type="password"
-                v-model="password"
-              ></v-text-field>
-              <v-text-field
-                label="Confirm Password"
-                type="password"
-                v-model="passwordConfirm"
-              ></v-text-field>
-              <span class="caption grey--text text--darken-1">
-                {{ mesajeAccount }}
-              </span>
+              <v-text-field label="Password" type="password" v-model="password"></v-text-field>
+              <v-text-field label="Confirm Password" type="password" v-model="passwordConfirm"></v-text-field>
+              <span class="caption grey--text text--darken-1">{{ mesajeAccount }}</span>
             </v-card-text>
           </v-window-item>
 
@@ -375,9 +313,7 @@
                 height="128"
                 src="https://firebasestorage.googleapis.com/v0/b/monosotakos.appspot.com/o/nekoAvatar.jpg?alt=media"
               ></v-img>
-              <h3 class="title font-weight-light mb-2">
-                Welcome to Monos Otakos
-              </h3>
+              <h3 class="title font-weight-light mb-2">Welcome to Monos Otakos</h3>
               <span class="caption grey--text">Thanks for signing up!</span>
             </div>
           </v-window-item>
@@ -386,24 +322,11 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn
-            :disabled="step === 1 || step === 3"
-            text
-            @click="stepOption('-')"
-            >Back</v-btn
-          >
+          <v-btn :disabled="step === 1 || step === 3" text @click="stepOption('-')">Back</v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="step === 3" text @click="dialog = false"
-            >Continuar</v-btn
-          >
+          <v-btn v-if="step === 3" text @click="dialog = false">Continuar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            :disabled="step === 3"
-            color="primary"
-            depressed
-            @click="stepOption('+')"
-            >Next</v-btn
-          >
+          <v-btn :disabled="step === 3" color="primary" depressed @click="stepOption('+')">Next</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -412,11 +335,17 @@
 </template>
 
 <script>
+import Search from "./search";
 import axios from "axios";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 const pattern = new RegExp("^[A-Z,0-9]+$", "i");
 export default {
+  name: "Navbar",
+  components: {
+    Search
+  },
   data() {
     return {
       drawer: false,
@@ -439,6 +368,7 @@ export default {
   },
   created() {
     this.getUsers();
+    this.getSeries();
   },
   mounted() {
     if (localStorage.user) {
@@ -503,6 +433,7 @@ export default {
   },
   methods: {
     ...mapMutations(["login", "logout"]),
+    ...mapActions(["getSeries"]),
     async getUsers() {
       let data = await axios.get(`${this.baseUrl}/auth/get`);
       this.users = data.data;

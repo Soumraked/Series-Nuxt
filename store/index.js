@@ -10,7 +10,8 @@ export const state = () => ({
   rol: "",
   seriesData: [],
   first: true,
-  token: ""
+  token: "",
+  series: {}
 });
 
 export const mutations = {
@@ -37,6 +38,10 @@ export const mutations = {
   },
   setFirst(state, status) {
     state.first = status;
+  },
+  setSeries(state, series) {
+    state.series = series;
+    //state.seriesNames = series.series;
   }
 };
 
@@ -60,6 +65,14 @@ export const actions = {
       }
     } else {
       commit("setFirst", true);
+    }
+  },
+  async getSeries({ commit, getters }) {
+    try {
+      const data = await axios.get(`${getters.getBaseUrl}/serie/name`);
+      commit("setSeries", data.data);
+    } catch (error) {
+      console.log(error);
     }
   }
 };
