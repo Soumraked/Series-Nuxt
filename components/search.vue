@@ -2,7 +2,13 @@
   <div>
     <v-menu :close-on-content-click="false" offset-y>
       <template v-slot:activator="{ on }">
-        <v-text-field hide-details label="Buscar..." v-model="search" v-on="on"></v-text-field>
+        <v-text-field
+          autocomplete="false"
+          hide-details
+          label="Buscar..."
+          v-model="search"
+          v-on="on"
+        ></v-text-field>
       </template>
       <v-responsive class="overflow-y-auto" max-height="400" max-width="300">
         <v-lazy dense transition="fade-transition" v-if="options.length > 0">

@@ -19,9 +19,9 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn text @click="out()">Cancel</v-btn>
+          <v-btn text @click="dialog = false">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" depressed @click="enter()">Enter</v-btn>
+          <v-btn :loading="loading" color="primary" depressed @click="enter()">Enter</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -41,7 +41,8 @@ export default {
       nicknameUser: "",
       passwordUser: "",
       messageAccount: "",
-      dialog: false
+      dialog: false,
+      loading: false
     };
   },
   computed: {
@@ -50,8 +51,10 @@ export default {
   methods: {
     ...mapMutations(["login"]),
     async enter() {
+      this.loading = true;
       if (this.nicknameUser == "" || this.passwordUser == "") {
         this.messageAccount = "Complete los campos antes de continuar.";
+        this.loading = false;
       } else {
         var Crypto = require("crypto-js");
         var newPass = Crypto.SHA256(this.passwordUser.toString()).toString();
@@ -61,11 +64,13 @@ export default {
         });
         if (data.data.message == "Wrong password, try again.") {
           this.messageAccount = "Contraseña incorrecta, intente nuevamente.";
+          this.loading = false;
         } else if (
           data.data.message == "User entered does not exist, try again."
         ) {
           this.messageAccount =
             "El usuario ingresado no existe, verifique la información e intente nuevamente.";
+          this.loading = false;
         } else if (data.data.token) {
           this.messageAccount = "Datos validados.";
           this.$store.commit("login", {
@@ -74,9 +79,11 @@ export default {
             rol: data.data.rol
           });
           this.dialog = false;
+          this.loading = false;
         } else {
           this.messageAccount =
             "Error desconocido, intente nuevamente o contáctese con el administrador.";
+          this.loading = false;
         }
       }
     }
@@ -84,6 +91,8 @@ export default {
   watch: {
     dialogprops(newValue, oldValue) {
       if (newValue != oldValue) {
+        this.nicknameUser = "";
+        this.passwordUser = "";
         this.dialog = true;
         this.messageAccount = "Introduzca sus credenciales para continuar.";
       }

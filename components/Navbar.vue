@@ -66,6 +66,13 @@
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
           <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+            <v-list-item>
+              <Search />
+              <v-btn icon>
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
+            </v-list-item>
+
             <v-list-item @click="toRedirect('/')">
               <v-list-item-action>
                 <v-list-item-icon>
@@ -100,13 +107,6 @@
                 </v-list-item-icon>
               </v-list-item-action>
               <v-list-item-title>En emision</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item>
-              <Search />
-              <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
             </v-list-item>
           </v-list-item-group>
         </v-list>

@@ -46,7 +46,7 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn :disabled="step === 1 || step === 3" text @click="stepOption('-')">Back</v-btn>
+          <v-btn :disabled="step === 3" text @click="stepOption('-')">Back</v-btn>
           <v-spacer></v-spacer>
           <v-btn v-if="step === 3" text @click="dialog = false">Continuar</v-btn>
           <v-spacer></v-spacer>
@@ -137,8 +137,12 @@ export default {
           }
         }
       } else if (option == "-") {
-        this.messageAccount = "";
-        this.step--;
+        if (this.step == 1) {
+          this.dialog = false;
+        } else {
+          this.messageAccount = "";
+          this.step--;
+        }
       }
     },
     async enterUser() {
